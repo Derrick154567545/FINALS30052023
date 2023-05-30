@@ -1,0 +1,99 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Prog2BubbleSort
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz-";
+            string line = " ";
+            List<string> tosort = new List<string>();
+            using (StreamReader sr = new StreamReader("C:\\Auh\\PleaseSort.txt"))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    tosort.Add(line);
+                }
+            }
+            //for(int x = 0; x < tosort.Count; x++)
+            //    Console.WriteLine(tosort[x]);
+            //Console.WriteLine(tosort[2]);
+            //Console.WriteLine(tosort[2][0]);
+            string temp = "";
+            for (int x = 0; x < tosort.Count; x++)
+            {
+                for (int y = 1; y < tosort.Count; y++)
+                {
+                    int dupcheck = 1;
+                    int spot = 0;
+                    while(dupcheck == 1)
+                    {
+                        Console.WriteLine(tosort[y]);
+                        Console.WriteLine(spot);
+                        Console.WriteLine(tosort[y - 1]);
+                        if (spot == tosort[y - 1].Length || (spot == tosort[y].Length))
+                        {
+                            dupcheck = 0;
+                            continue;
+                        }
+                        char prechar = tosort[y][spot];
+                        string preletter = Char.ToString(prechar);
+                        char postchar = tosort[y - 1][spot];
+                        string postletter = Char.ToString(postchar);
+                        //this part makes it so that the code doesnt recognise uppercase and lowercase as different
+                        postletter = postletter.ToLower();
+                        preletter = preletter.ToLower();
+                        //Console.WriteLine(preletter + " " + postletter);
+                        if (preletter == postletter)
+                        {
+                            //Console.WriteLine("THIS HAPPENED ");
+                            spot = spot + 1;
+                            continue;
+                        }
+                        int preint = alphabet.Length + 1;
+                        int postint = alphabet.Length + 1;
+                        for(int a = 0; a < alphabet.Length; a++)
+                        {
+                            char alphabetgrabchar = alphabet[a];
+                            string alphabetgrab = Char.ToString(alphabetgrabchar);
+                            if (preletter == alphabetgrab)
+                            {
+                                preint = a;
+                            }
+                        }
+                        for (int a = 0; a < alphabet.Length; a++)
+                        {
+                            char alphabetgrabchar = alphabet[a];
+                            string alphabetgrab = Char.ToString(alphabetgrabchar);
+                            if (postletter == alphabetgrab)
+                            {
+                                postint = a;
+                            }
+                        }
+                        if(preint < postint)
+                        {
+                            temp = tosort[y - 1];
+                            tosort[y - 1] = tosort[y];
+                            tosort[y] = temp;
+                        }
+                        dupcheck = 0;
+                    }
+                }
+                //Console.ReadKey();
+            }
+            using (StreamWriter sw = new StreamWriter("C:\\Auh\\YayGod.txt")) 
+            {
+                for (int r = 0; r <tosort.Count; r++)
+                {
+                    sw.WriteLine(tosort[r]);
+                }
+            }
+        }
+    }
+}
