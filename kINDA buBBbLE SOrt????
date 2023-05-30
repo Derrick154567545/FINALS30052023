@@ -1,0 +1,62 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BubbleSortingWords
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int comparisons = 0;
+            int totaltimes = 0;
+            Random rnd = new Random();
+            //MAKE THE LIST
+            List<int> sortpls = new List<int>();
+            for(int x = 100; x > 0; x--)
+            {
+                sortpls.Add(rnd.Next(200));
+            }
+            //PRINT THE LIST TO BE SORTED
+            for (int x = 0; x < sortpls.Count; x++)
+            {
+                Console.Write(sortpls[x] + "\t");
+                if (x > 0 && (x + 1) % 10 == 0)
+                    Console.WriteLine();
+            }
+            //SORT 
+            for (int x = 0; x < sortpls.Count - 1; x++)
+            {
+                for(int y = x + 1; y < sortpls.Count; y++)
+                {
+                    if(sortpls[x] > sortpls[y])
+                    {
+                        int temp = sortpls[x]; 
+                        sortpls[x] = sortpls[y];
+                        sortpls[y] = temp;
+                        comparisons = comparisons + 1;
+                    }
+                    totaltimes = totaltimes + 1;
+                }
+            }
+            //PRINT THE SORTED LIST
+            string print = "SORTED";
+            for (int x = 0; x < 100000; x++)
+                print = print + "?";
+            Console.WriteLine(print);
+            for (int x = 0; x < sortpls.Count; x++)
+            {
+                Console.Write(sortpls[x] + "\t");
+                if (x > 0 && (x + 1) % 10 == 0)
+                    Console.WriteLine();
+            }
+            Console.WriteLine("Comparisons " + comparisons + " Total times the loop happened " + totaltimes);
+            Console.ReadKey();
+        }
+    }
+}
