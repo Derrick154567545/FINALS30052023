@@ -1,0 +1,126 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace BubbleSortWithVisualizer2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int program = 1;
+            while (program == 1)
+            {
+                int[] visualizerSize = { 50, 100 }; // rows and columns of console
+
+                Random rnd = new Random();
+                int[] arr = new int[visualizerSize[1]];
+                int[] newDispl = new int[visualizerSize[1]];
+                int[] curDispl = new int[visualizerSize[1]];
+                int temp = 0;
+
+                /*
+                 * Possible colors:
+                 * 0 : Reset Color
+                 * 1 : Blue
+                 * 2 : Red
+                 * 3 : Green
+                 */
+
+                for (int x = 0; x < arr.Length; x++)
+                {
+                    arr[x] = rnd.Next(visualizerSize[0]) + 1;
+                    newDispl[x] = 0;
+                    curDispl[x] = 0;
+                }
+
+                // this line just sets the window size to always display in a 
+                // 120 * 30 characters in size
+                //Console.SetWindowSize(visualizerSize[1], visualizerSize[0] + 1); //This doesnt work on Mac
+
+                for (int a = 0; a < arr.Length; a++)
+                {
+                    for (int b = visualizerSize[0]; b > 0; b--)
+                    {
+                        Console.SetCursorPosition(a, b - 1);
+                        if (arr[a] > visualizerSize[0] - b)
+                            Console.Write("0");
+                        else
+                            Console.Write(" ");
+                    }
+                }
+                Console.SetCursorPosition(0, visualizerSize[0] + 1);
+                Console.Write("To be sorted using insertion sort... Press any key to begin...");
+                Console.ReadKey();
+                string theline = "";
+                int comparisons = 0;
+                for (int i = 1; i < arr.Length; i++)
+                {
+                    newDispl[i] = 1;
+                    int val = arr[i];
+                    int flag = 0;
+                    for (int j = i - 1; j >= 0 && flag != 1;)
+                    {
+                        comparisons = comparisons + 1;
+                        theline = "Pass {0} : Inserting....                                    ";
+                        newDispl[i] = 1;
+                        newDispl[j + 1] = 3;
+                        if (val < arr[j])
+                        {
+                            theline = "Pass {0} : Moving....                                   ";
+                            newDispl[i] = 1;
+                            newDispl[j] = 2;
+                            newDispl[j + 1] = 3;
+                            arr[j + 1] = arr[j];
+                            j--;
+                            arr[j + 1] = val;
+                        }
+                        else flag = 1;
+                        //THE DISPLAY
+                        for (int a = 0; a < arr.Length; a++)
+                        {
+                            for (int b = visualizerSize[0]; b > 0; b--)
+                            {
+                                if (newDispl[a] != curDispl[a])
+                                {
+                                    Console.SetCursorPosition(a, b - 1);
+                                    switch (newDispl[a])
+                                    {
+                                        case 0:
+                                            Console.ResetColor();
+                                            break;
+                                        case 1:
+                                            Console.ForegroundColor = ConsoleColor.Blue;
+                                            break;
+                                        case 2:
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            break;
+                                        case 3:
+                                            Console.ForegroundColor = ConsoleColor.Green;
+                                            break;
+                                    }
+                                    if (arr[a] > visualizerSize[0] - b)
+                                        Console.Write("0");
+                                    else
+                                        Console.Write(" ");
+                                }
+                            }
+                            curDispl[a] = newDispl[a];
+                            newDispl[a] = 0;
+                        }
+                        Console.SetCursorPosition(0, visualizerSize[0] + 1);
+                        Console.Write(theline, i);
+                        //Console.ReadKey();
+                        //Thread.Sleep(100);
+                    }
+                }
+                Console.SetCursorPosition(0, visualizerSize[0] + 1);
+                Console.Write("Done!!!!!!!!! " + " in " + comparisons + " comparisons!!!!!!!");
+                Console.ReadKey();
+            }
+        }
+    }
+}
