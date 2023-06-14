@@ -1,0 +1,79 @@
+using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace malding
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int[]> cards = new List<int[]>();
+            List<int[]> hand = new List<int[]>();
+            string[] suits = { "Hearts", "Spades", "Diamonds", "Clubs" };
+            string[] values = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
+            for (int x = 0; x < suits.Length; x++)
+            {
+                for (int y = 0; y < values.Length; y++)
+                {
+                    cards.Add(new int[] { x, y });
+                }
+            }
+            cards = shuffleCards(cards, 0);
+            // draw 7 cards
+            while (hand.Count < 7)
+            {
+                hand.Add(drawCard(cards));
+                cards = removeTopCardFromDeck(cards);
+            }
+            // display hand
+            displayHand(hand);
+            Console.ReadKey();
+        }
+        static List<int[]> shuffleCards(List<int[]> cards, int count)
+        {
+            Random rnd = new Random();
+            for(int i = 0; i < cards.Count; i++)
+            {
+                int randnum = rnd.Next(cards.Count);
+                int[] temp = cards[i];
+                cards[i] = cards[randnum];
+                cards[randnum] = temp;
+            }
+            if(count < 7)
+                shuffleCards(cards, count + 1);
+            return cards;
+        }
+        static int[] drawCard(List<int[]> cards)
+        {
+            //Take the first card from the deck
+            int thetopcardposition = cards.Count;
+            int[] thetopcard = cards[thetopcardposition - 1];
+            //return new int[] { };
+            return thetopcard;
+        }
+        static List<int[]> removeTopCardFromDeck(List<int[]> cards)
+        {
+            //Take the first card outta the deck
+            int thetopcardposition = cards.Count;
+            cards.RemoveAt(thetopcardposition - 1);
+            return cards;
+        }
+        static void displayHand(List<int[]> hand)
+        {
+            string[] suits = { "Hearts", "Spades", "Diamonds", "Clubs" };
+            string[] values = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
+            for(int i = 0; i < hand.Count; i++)
+            {
+                string displaysuit = suits[hand[i][0]];
+                string displayvalue = values[hand[i][1]];
+                string displaythis = displayvalue + " of " + displaysuit;
+                Console.WriteLine(displaythis);
+            }
+        }
+    }
+}
