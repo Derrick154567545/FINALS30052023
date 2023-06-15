@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IFORGOTIFORGOT
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string inp = getnum();
+            int answer = hexaconvert(inp, inp.Length - 1, 0);
+            Console.WriteLine(answer);
+            Console.ReadKey();
+        }
+        static string getnum()
+        {
+            string inp = Console.ReadLine();
+            if (inp.Length > 4 || inp.Length == 0)
+            {
+                Console.WriteLine("TOO LONG MAX 4 CHARACTERS OR ITS NOTHING");
+                getnum();
+            }
+            return inp;
+        }
+
+        static int hexaconvert(string inp, int count, int answer)
+        {
+            string[] hexletters = { "a", "b", "c", "d", "e"};
+            string[] decimalnumbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+            int thisnum = (inp.Length - 1) - (count);
+            //Console.WriteLine("DEBUGGING FIRST SEGMENT");
+            for(int a = 0; a < hexletters.Length; a++)
+            {
+                string guh = hexletters[a];
+                string goh = inp[count].ToString();
+                goh = goh.ToLower();
+                //Console.WriteLine("DEBUGGING " + " a " + a + " guh " + guh + " goh " + goh);
+                if (goh == guh)
+                {
+                    //Console.WriteLine("DEBUGGING ANSWER " + answer + " thisnum " + thisnum + " sixteentothepower " + (int)Math.Pow(16, thisnum));
+                    answer = answer + ((a + 10) * (int)Math.Pow(16,thisnum));
+                    //Console.WriteLine("DEBUGGING ANSWER " + answer);
+                }
+            }
+            //Console.WriteLine("DEBUGGING NEXT SEGMENT");
+            for(int a = 0; a < decimalnumbers.Length; a++)
+            {
+                string guh = decimalnumbers[a];
+                string goh = inp[count].ToString();
+                goh = goh.ToLower();
+                //Console.WriteLine("DEBUGGING " + " a " + a + " guh " + guh + " goh " + goh);
+                if (goh == guh)
+                {
+                    //Console.WriteLine("DEBUGGING ANSWER " + answer + " thisnum " + thisnum + " sixteentothepower " + (int)Math.Pow(16, thisnum));
+                    answer = answer + ((a) *(int)Math.Pow(16, thisnum));
+                    //Console.WriteLine("DEBUGGING ANSWER " + answer);
+                }
+            }
+            if (count > 0 )
+                answer = hexaconvert(inp, count - 1, answer);
+            return answer;
+        }
+
+    }
+}
